@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluida Statis - Media Pembelajaran Interaktif</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset dan variabel */
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+        }
+        
+        /* Floating Navigation */
+        .floating-nav {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 0.5rem;
+        }
+        
+        .floating-nav a {
+            padding: 0.8rem;
+            margin: 0.3rem 0;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-nav a:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+        
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 80px auto 2rem;
+            padding: 0 2rem;
+        }
+        
+        section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            scroll-margin-top: 80px;
+        }
+        
+        h2 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        h3 {
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        /* Power Words */
+        .power-word {
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        /* Content Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+        
+        .content-grid.reverse {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .text-content {
+            grid-column: 1;
+        }
+        
+        .image-content {
+            grid-column: 2;
+            text-align: center;
+        }
+        
+        .image-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .full-width-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* List Styles dengan indentasi */
+        ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+            padding-left: 0.5rem;
+        }
+        
+        /* Example and Problem Styles */
+        .example-box, .problem-box {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .problem-box {
+            border-left-color: var(--accent);
+        }
+        
+        .answer-box {
+            background: #e8f4fc;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .toggle-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.3s;
+        }
+        
+        .toggle-btn:hover {
+            background: var(--secondary);
+        }
+        
+        /* Exercise Section */
+        .exercise-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .exercise {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .exercise h4 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Formula Styles */
+        .formula-box {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .formula {
+            text-align: center;
+            font-size: 1.4rem;
+            margin: 1rem 0;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        .variables {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .variable-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            width: calc(50% - 0.5rem);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .content-grid, .content-grid.reverse {
+                grid-template-columns: 1fr;
+            }
+            
+            .text-content, .image-content {
+                grid-column: 1;
+            }
+            
+            .floating-nav {
+                display: none;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .variable-item {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-tint"></i>
+                <h1>FLUIDA STATIS</h1>
+            </div>
+            <div class="year">Tahun Pembuatan: 2025</div>
+        </div>
+    </header>
+
+    <!-- Floating Navigation -->
+    <nav class="floating-nav">
+        <a href="#pendahuluan" title="Pendahuluan"><i class="fas fa-home"></i></a>
+        <a href="#tekanan-hidrostatis" title="Tekanan Hidrostatis"><i class="fas fa-water"></i></a>
+        <a href="#hukum-pascal" title="Hukum Pascal"><i class="fas fa-syringe"></i></a>
+        <a href="#hukum-archimedes" title="Hukum Archimedes"><i class="fas fa-ship"></i></a>
+        <a href="#tegangan-permukaan" title="Tegangan Permukaan"><i class="fas fa-tint"></i></a>
+        <a href="#contoh-soal" title="Contoh Soal"><i class="fas fa-calculator"></i></a>
+        <a href="#latihan" title="Latihan Soal"><i class="fas fa-pencil-alt"></i></a>
+        <a href="#kesimpulan" title="Kesimpulan"><i class="fas fa-flag-checkered"></i></a>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Pendahuluan -->
+        <section id="pendahuluan">
+            <h2>Pendahuluan: Fluida Statis</h2>
+            <img src="https://images.unsplash.com/photo-1530533718754-001d2668365a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Air yang tenang" class="full-width-image">
+            <p><span class="power-word">Fluida statis</span> adalah cabang ilmu fisika yang mempelajari sifat-sifat fluida (cairan dan gas) dalam keadaan diam. Berbeda dengan fluida dinamis yang mempelajari fluida bergerak, fluida statis fokus pada tekanan, gaya apung, dan keseimbangan fluida yang tidak bergerak.</p>
+            
+            <div class="content-grid">
+                <div class="text-content">
+                    <h3>Konsep Dasar Fluida</h3>
+                    <p>Fluida adalah zat yang dapat mengalir, mencakup cairan dan gas. Dalam fluida statis, kita mempelajari:</p>
+                    <ul>
+                        <li><span class="power-word">Tekanan hidrostatis</span> - tekanan yang dihasilkan oleh fluida diam</li>
+                        <li><span class="power-word">Hukum Pascal</span> - prinsip transmisi tekanan dalam fluida</li>
+                        <li><span class="power-word">Hukum Archimedes</span> - prinsip gaya apung pada benda yang tercelup</li>
+                        <li><span class="power-word">Tegangan permukaan</span> - sifat permukaan fluida yang menegang</li>
+                    </ul>
+                </div>
+                <div class="image-content">
+                    <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Ilustrasi konsep fluida">
+                </div>
+            </div>
+        </section>
+
+        <!-- Tekanan Hidrostatis -->
+        <section id="tekanan-hidrostatis">
+            <h2>Tekanan Hidrostatis</h2>
+            <div class="content-grid">
+                <div class="text-content">
+                    <h3>Definisi dan Rumus</h3>
+                    <p><span class="power-word">Tekanan hidrostatis</span> adalah tekanan yang dihasilkan oleh fluida yang diam akibat gravitasi. Tekanan ini meningkat seiring dengan kedalaman karena berat fluida di atasnya.</p>
+                    
+                    <div class="formula-box">
+                        <div class="formula">P = ρ × g × h</div>
+                        <div class="variables">
+                            <div class="variable-item">
+                                <strong>P</strong> = Tekanan hidrostatis (Pa atau N/m²)
+                            </div>
+                            <div class="variable-item">
+                                <strong>ρ</strong> = Massa jenis fluida (kg/m³)
+                            </div>
+                            <div class="variable-item">
+                                <strong>g</strong> = Percepatan gravitasi (9.8 m/s²)
+                            </div>
+                            <div class="variable-item">
+                                <strong>h</strong> = Kedalaman dari permukaan fluida (m)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Ilustrasi tekanan hidrostatis">
+                </div>
+            </div>
+            
+            <div class="example-box">
+                <h3>Penerapan dalam Kehidupan Sehari-hari</h3>
+                <p>Konsep tekanan hidrostatis dapat diamati dalam berbagai situasi:</p>
+                <ul>
+                    <li><span class="power-word">Bendungan</span> - Bagian bawah bendungan lebih tebal karena tekanan air meningkat dengan kedalaman</li>
+                    <li><span class="power-word">Penyelam</span> - Merasakan tekanan lebih besar saat menyelam lebih dalam</li>
+                    <li><span class="power-word">Infus</span> - Tinggi botol infus mempengaruhi tekanan yang mendorong cairan masuk ke pembuluh darah</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Hukum Pascal -->
+        <section id="hukum-pascal">
+            <h2>Hukum Pascal</h2>
+            <div class="content-grid reverse">
+                <div class="image-content">
+                    <img src="https://images.unsplash.com/photo-1585075825849-67cdefc0e752?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Ilustrasi Hukum Pascal">
+                </div>
+                <div class="text-content">
+                    <h3>Prinsip Dasar</h3>
+                    <p><span class="power-word">Hukum Pascal</span> menyatakan bahwa tekanan yang diberikan pada fluida dalam ruang tertutup akan diteruskan sama besar ke segala arah.</p>
+                    
+                    <div class="formula-box">
+                        <div class="formula">P₁ = P₂</div>
+                        <div class="formula">F₁/A₁ = F₂/A₂</div>
+                        <div class="variables">
+                            <div class="variable-item">
+                                <strong>P</strong> = Tekanan (Pa)
+                            </div>
+                            <div class="variable-item">
+                                <strong>F</strong> = Gaya (N)
+                            </div>
+                            <div class="variable-item">
+                                <strong>A</strong> = Luas permukaan (m²)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="example-box">
+                <h3>Penerapan dalam Kehidupan Sehari-hari</h3>
+                <p>Hukum Pascal dimanfaatkan dalam berbagai alat:</p>
+                <ul>
+                    <li><span class="power-word">Dongkrak hidrolik</span> - Mengangkat mobil dengan gaya kecil</li>
+                    <li><span class="power-word">Rem hidrolik</span> - Pada kendaraan untuk pengereman efektif</li>
+                    <li><span class="power-word">Mesin press hidrolik</span> - Untuk mengepres bahan dengan tekanan tinggi</li>
+                    <li><span class="power-word">Suntikan</span> - Prinsip kerja suntikan medis</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Hukum Archimedes -->
+        <section id="hukum-archimedes">
+            <h2>Hukum Archimedes</h2>
+            <div class="content-grid">
+                <div class="text-content">
+                    <h3>Prinsip Gaya Apung</h3>
+                    <p><span class="power-word">Hukum Archimedes</span> menyatakan bahwa sebuah benda yang tercelup sebagian atau seluruhnya dalam fluida akan mengalami gaya apung yang besarnya sama dengan berat fluida yang dipindahkan.</p>
+                    
+                    <div class="formula-box">
+                        <div class="formula">F<sub>a</sub> = ρ<sub>f</sub> × g × V<sub>bf</sub></div>
+                        <div class="variables">
+                            <div class="variable-item">
+                                <strong>F<sub>a</sub></strong> = Gaya apung (N)
+                            </div>
+                            <div class="variable-item">
+                                <strong>ρ<sub>f</sub></strong> = Massa jenis fluida (kg/m³)
+                            </div>
+                            <div class="variable-item">
+                                <strong>g</strong> = Percepatan gravitasi (9.8 m/s²)
+                            </div>
+                            <div class="variable-item">
+                                <strong>V<sub>bf</sub></strong> = Volume benda yang tercelup dalam fluida (m³)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Ilustrasi Hukum Archimedes">
+                </div>
+            </div>
+            
+            <div class="example-box">
+                <h3>Penerapan dalam Kehidupan Sehari-hari</h3>
+                <p>Hukum Archimedes menjelaskan berbagai fenomena:</p>
+                <ul>
+                    <li><span class="power-word">Kapal laut</span> - Mengapung meski terbuat dari baja yang lebih berat dari air</li>
+                    <li><span class="power-word">Balon udara</span> - Terbang karena massa jenisnya lebih kecil dari udara</li>
+                    <li><span class="power-word">Hidrometer</span> - Alat untuk mengukur massa jenis cairan</li>
+                    <li><span class="power-word">Penyelaman</span> - Mengatur daya apung dengan baju selam atau pelampung</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Tegangan Permukaan -->
+        <section id="tegangan-permukaan">
+            <h2>Tegangan Permukaan</h2>
+            <div class="content-grid reverse">
+                <div class="image-content">
+                    <img src="https://images.unsplash.com/photo-1551085254-e96b210db58a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Ilustrasi tegangan permukaan">
+                </div>
+                <div class="text-content">
+                    <h3>Konsep dan Penyebab</h3>
+                    <p><span class="power-word">Tegangan permukaan</span> adalah kecenderungan permukaan fluida untuk menegang, sehingga permukaannya seperti ditutupi oleh selaput elastis. Fenomena ini disebabkan oleh gaya kohesi antara molekul-molekul fluida.</p>
+                    <p>Tegangan permukaan diukur dalam satuan N/m atau dyne/cm.</p>
+                    <p>Faktor yang mempengaruhi tegangan permukaan:</p>
+                    <ul>
+                        <li>Suhu - Tegangan permukaan menurun dengan meningkatnya suhu</li>
+                        <li>Jenis fluida - Setiap fluida memiliki tegangan permukaan berbeda</li>
+                        <li>Zat terlarut - Dapat meningkatkan atau menurunkan tegangan permukaan</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="example-box">
+                <h3>Penerapan dalam Kehidupan Sehari-hari</h3>
+                <p>Beberapa contoh tegangan permukaan:</p>
+                <ul>
+                    <li><span class="power-word">Serangga air</span> - Dapat berjalan di atas air</li>
+                    <li><span class="power-word">Tetes air</span> - Membentuk bentuk bulat karena tegangan permukaan</li>
+                    <li><span class="power-word">Sabun dan deterjen</span> - Bekerja dengan mengurangi tegangan permukaan air</li>
+                    <li><span class="power-word">Kapilaritas</span> - Naiknya air dalam pipa kapiler</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Contoh Soal -->
+        <section id="contoh-soal">
+            <h2>Contoh Soal</h2>
+            
+            <!-- Soal Mudah -->
+            <div class="problem-box">
+                <h3>Soal Mudah</h3>
+                <p>Seorang penyelam berada pada kedalaman 10 meter di bawah permukaan air laut. Jika massa jenis air laut adalah 1025 kg/m³ dan percepatan gravitasi 9.8 m/s², hitung tekanan hidrostatis yang dialami penyelam!</p>
+                <button class="toggle-btn" onclick="toggleAnswer('answer1')">Tampilkan Jawaban</button>
+                <div id="answer1" class="answer-box">
+                    <p><strong>Jawaban:</strong> 100,450 Pa</p>
+                </div>
+            </div>
+            
+            <!-- Soal Menengah -->
+            <div class="problem-box">
+                <h3>Soal Menengah</h3>
+                <p>Sebuah dongkrak hidrolik memiliki dua piston dengan luas penampang 5 cm² dan 500 cm². Jika gaya 100 N diberikan pada piston kecil, berapa gaya yang dihasilkan pada piston besar?</p>
+                <button class="toggle-btn" onclick="toggleAnswer('answer2')">Tampilkan Jawaban</button>
+                <div id="answer2" class="answer-box">
+                    <p><strong>Jawaban:</strong> 10,000 N</p>
+                </div>
+            </div>
+            
+            <!-- Soal Sulit -->
+            <div class="problem-box">
+                <h3>Soal Sulit (Standar PISA)</h3>
+                <img src="https://images.unsplash.com/photo-1576675466969-38eeae4b41f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Ilustrasi soal PISA" style="width: 100%; max-width: 400px; display: block; margin: 1rem auto;">
+                <p>Sebuah balok kayu dengan massa jenis 600 kg/m³ dan volume 0.02 m³ mengapung di air (massa jenis 1000 kg/m³).</p>
+                <p>a. Berapa persen volume balok yang tercelup dalam air?</p>
+                <p>b. Jika di atas balok diletakkan beban 2 kg, berapa volume tambahan yang tercelup?</p>
+                <button class="toggle-btn" onclick="toggleAnswer('answer3')">Tampilkan Jawaban</button>
+                <div id="answer3" class="answer-box">
+                    <p><strong>Jawaban:</strong></p>
+                    <p>a. 60%</p>
+                    <p>b. 0.002 m³</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Latihan Soal -->
+        <section id="latihan">
+            <h2>Latihan Soal</h2>
+            <div class="exercise-container">
+                <!-- Soal Teoritis -->
+                <div class="exercise">
+                    <h4><i class="fas fa-lightbulb"></i> Soal Teoritis</h4>
+                    <p>Mengapa bagian bawah bendungan dibuat lebih tebal daripada bagian atasnya? Jelaskan berdasarkan konsep fluida statis!</p>
+                    <button class="toggle-btn" onclick="toggleAnswer('theory-answer')">Tampilkan Jawaban</button>
+                    <div id="theory-answer" class="answer-box">
+                        <p><strong>Jawaban:</strong> Bagian bawah bendungan dibuat lebih tebal karena tekanan hidrostatis meningkat seiring dengan kedalaman. Tekanan di dasar bendungan lebih besar daripada di permukaan, sehingga diperlukan struktur yang lebih kuat untuk menahan tekanan tersebut.</p>
+                    </div>
+                </div>
+                
+                <!-- Soal Hitungan -->
+                <div class="exercise">
+                    <h4><i class="fas fa-calculator"></i> Soal Hitungan</h4>
+                    <p>Sebuah benda memiliki berat 50 N di udara dan 30 N ketika dicelupkan seluruhnya ke dalam air. Hitung massa jenis benda tersebut! (massa jenis air = 1000 kg/m³, g = 10 m/s²)</p>
+                    <button class="toggle-btn" onclick="toggleAnswer('calculation-answer')">Tampilkan Jawaban</button>
+                    <div id="calculation-answer" class="answer-box">
+                        <p><strong>Jawaban:</strong> 2500 kg/m³</p>
+                    </div>
+                </div>
+                
+                <!-- Soal Berpikir Kritis -->
+                <div class="exercise">
+                    <h4><i class="fas fa-brain"></i> Soal Berpikir Kritis</h4>
+                    <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Ilustrasi kapal" style="width: 100%; border-radius: 5px; margin-bottom: 1rem;">
+                    <p>Mengapa kapal yang terbuat dari baja dapat mengapung di air, sedangkan sebatang baja dengan massa yang sama akan tenggelam? Jelaskan dengan konsep fluida statis!</p>
+                    <button class="toggle-btn" onclick="toggleAnswer('critical-answer')">Tampilkan Jawaban</button>
+                    <div id="critical-answer" class="answer-box">
+                        <p><strong>Jawaban:</strong> Kapal baja dapat mengapung karena bentuknya yang berongga membuat volume air yang dipindahkan lebih besar. Berdasarkan Hukum Archimedes, gaya apung sama dengan berat air yang dipindahkan. Dengan volume yang lebih besar, gaya apung yang dihasilkan cukup untuk menopang berat kapal, sedangkan baja padat memiliki volume lebih kecil sehingga gaya apungnya tidak cukup.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kesimpulan -->
+        <section id="kesimpulan">
+            <h2>Kesimpulan dan Penutup</h2>
+            <div class="content-grid">
+                <div class="text-content">
+                    <h3>Ringkasan Materi</h3>
+                    <p>Dalam pembelajaran <span class="power-word">fluida statis</span>, kita telah mempelajari empat konsep utama:</p>
+                    <ul>
+                        <li><span class="power-word">Tekanan hidrostatis</span> meningkat dengan kedalaman: P = ρgh</li>
+                        <li><span class="power-word">Hukum Pascal</span> menjelaskan transmisi tekanan dalam fluida tertutup</li>
+                        <li><span class="power-word">Hukum Archimedes</span> menjelaskan gaya apung pada benda tercelup</li>
+                        <li><span class="power-word">Tegangan permukaan</span> adalah sifat permukaan fluida yang menegang</li>
+                    </ul>
+                    <p>Konsep-konsep ini tidak hanya penting dalam fisika, tetapi juga memiliki banyak penerapan dalam teknologi dan kehidupan sehari-hari.</p>
+                </div>
+                <div class="image-content">
+                    <img src="https://images.unsplash.com/photo-1530533718754-001d2668365a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Ilustrasi penutup">
+                </div>
+            </div>
+            
+            <div class="example-box">
+                <h3>Aplikasi Lanjutan</h3>
+                <p>Pemahaman tentang fluida statis menjadi dasar untuk mempelajari:</p>
+                <ul>
+                    <li>Fluida dinamis dan aerodinamika</li>
+                    <li>Teknologi kapal selam dan kendaraan bawah air</li>
+                    <li>Sistem hidrolik dalam industri</li>
+                    <li>Meteorologi dan oseanografi</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Dibuat oleh <strong>Rustaman</strong> untuk <strong>Channel YouTube Arsip Byte</strong> - Tahun 2025</p>
+        <p>Media Pembelajaran Interaktif - Fluida Statis</p>
+    </footer>
+
+    <script>
+        // Fungsi untuk menampilkan/menyembunyikan jawaban
+        function toggleAnswer(id) {
+            const answerBox = document.getElementById(id);
+            if (answerBox.style.display === "block") {
+                answerBox.style.display = "none";
+            } else {
+                answerBox.style.display = "block";
+            }
+        }
+        
+        // Smooth scroll untuk navigasi
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
